@@ -1,5 +1,5 @@
 VARNAME_REGEX="(^\w+)"
-EQVALUE_REGEX="(=.+)"
+EQVALUE_REGEX="(=(.+))"
 VALUE_REGEX="(\w.+)"
 ESCAPE_REGEX="(\\@)"
 TMP_ESCAPE="__ESC_TMP_ESC__"
@@ -40,9 +40,9 @@ replace () {
 
 		while IFS='' read -r line || [[ -n "$line" ]]; do
 			varname=$(echo $line | grep -P -o $VARNAME_REGEX)
-			value=$(echo $line | grep -P -o $EQVALUE_REGEX | grep -P -o $VALUE_REGEX)
+			value=$(echo $line | grep -E -o $EQVALUE_REGEX | grep -E -o $VALUE_REGEX)
 			to_find="@$varname@"
-			#echo "$to_find -> $value"
+			echo "$to_find -> $value"
 			cp -R "$3" "__tmp"
 			sed -e "s/$to_find/$value/g" "__tmp" >"$3"
 			#echo $varname
