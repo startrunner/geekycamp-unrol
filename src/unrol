@@ -1,0 +1,113 @@
+VARNAME_REGEX="(^\w+)"
+EQVALUE_REGEX="(=.+)"
+VALUE_REGEX="(\w.+)"
+ESCAPE_REGEX="(\\@)"
+TMP_ESCAPE="__ESC_TMP_ESC__"
+doctext=""
+
+quit_file_doesnotexist () {
+	echo "File '"$1"' Does not exist :/"
+	exit
+}
+
+quit_help () {
+	echo "Unrol v0.1a by Alexander Ivanov"
+	echo "Usage: ./unrol <template-file> <var-file>  [output-file]"
+	exit
+}
+
+quit_invalid_syntax () {
+	echo "Invalid syntax."
+	quit_help
+}
+
+require_file () {
+	if [ ! -f $1 ]; then
+		quit_file_doesnotexist $1
+	fi	
+}
+
+replace_one () {
+	true
+}
+
+replace () {
+	cp -R "$1" "$3"
+
+	while [ "true" ]; do
+		cp -R "$3" "__tmp"
+		sed -e 's/\\@/__ESC_TMP_ESC__/g' "__tmp" >"$3"
+
+		while IFS='' read -r line || [[ -n "$line" ]]; do
+			varname=$(echo $line | grep -P -o $VARNAME_REGEX)
+			value=$(echo $line | grep -P -o $EQVALUE_REGEX | grep -P -o $VALUE_REGEX)
+			to_find="@$varname@"
+			#echo "$to_find -> $value"
+			cp -R "$3" "__tmp"
+			sed -e "s/$to_find/$value/g" "__tmp" >"$3"
+			#echo $varname
+			#echo $value
+		done < "$2";
+
+		comparison="$( cmp "$3" "__tmp" )"
+		comparison=${comparison:0:1}
+		if [ ! $comparison ]; then
+			break
+		fi
+	done
+
+	cp -R "__tmp" "$3"
+	sed -e 's/__ESC_TMP_ESC__/@/g' "__tmp" >"$3"
+	rm -R "__tmp"
+}
+
+if  [ "$1" = "--help" ]; then
+	quit_help
+fi
+
+if [ "$1" = "" ]  || [ "$2" = "" ] || [ "$3" = "" ]; then
+	quit_invalid_syntax
+fi 	
+
+require_file $1; require_file $2
+replace $1 $2 $3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

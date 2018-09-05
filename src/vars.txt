@@ -1,0 +1,8 @@
+SITENAME=My blog
+TITLE=Cool new stuff
+SUBTITLE=From cool old people
+CONTENT=From the creators of @SITENAME@ and the owner of google\@facebook.com, we present to you @SUBTITLE@
+EMAIL_DOMAIN=source.exposed
+EMAIL_USER=alex
+EMAIL=EMAIL_USER\@EMAIL_DOMAIN
+PHONE=123456 foo kur bar

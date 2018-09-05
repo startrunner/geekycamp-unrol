@@ -1,2 +1,3 @@
-# geekycamp-unrol
-A ba(sh) templating engine
+# Unrol ::  A simple ba(sh) templating engine
+
+## SYNTAX: ***./unrol template.html vars.txt site.html***
